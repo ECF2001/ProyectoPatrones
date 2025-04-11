@@ -3,18 +3,24 @@ using UnityEngine;
 public class PlayerStateMachine : MonoBehaviour
 {
     public IPlayerState currentState;
-    public Animator animator;
     public Rigidbody2D rb;
+    public Animator animator; // Nuevo
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>(); // Asegúrate de que el Animator esté en el mismo GameObject
+    }
 
     private void Start()
     {
-        currentState = new IdleState(this, animator, rb); // El estado inicial es Idle
+        currentState = new IdleState(this, rb);
         currentState.Enter();
     }
 
     private void Update()
-    { 
-        currentState.HandleInput(this); // Maneja la entrada del jugador
+    {
+        currentState.HandleInput(this);
         currentState.Update();
     }
 
@@ -25,8 +31,8 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void ChangeState(IPlayerState newState)
     {
-        currentState.Exit(); // Salir del estado actual
+        currentState.Exit();
         currentState = newState;
-        currentState.Enter(); // Entrar en el nuevo estado
+        currentState.Enter();
     }
 }
