@@ -1,10 +1,12 @@
 using UnityEngine;
 
+
 public class PlayerShoot : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public Transform shootPoint;
     public float bulletSpeed = 5f;
+  
 
     void Update()
     {
@@ -16,17 +18,33 @@ public class PlayerShoot : MonoBehaviour
 
     void Shoot()
     {
+        // Obtener posición del mouse en el mundo
         Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         target.z = 0;
 
-        Vector2 direction = (target - transform.position).normalized;
+        // Calcular dirección
+        Vector2 direction = (target - shootPoint.position).normalized;
 
+        // Instanciar bala
         GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.identity);
-        bullet.transform.localScale = Vector3.one; 
+
+        // Ajustar escala y dirección
+        bullet.transform.localScale = Vector3.one;
+
+        // Configurar física
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        rb.linearVelocity = direction * bulletSpeed;
-        rb.MoveRotation(Quaternion.FromToRotation(Vector3.up, direction)); // Rotar la bala para que apunte en la dirección correcta
+        rb.linearVelocity = direction * bulletSpeed; // <- usa velocity en lugar de linearVelocity
+        rb.MoveRotation(Quaternion.FromToRotation(Vector3.up, direction).eulerAngles.z); // Rotar la bala correctamente
+
+        // Configurar comportamiento de la bala
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        if (bulletScript != null)
+        {
+            bulletScript.isEnemyBullet = false;
+        }
+
         Debug.Log("Bala disparada");
     }
+
 
 }

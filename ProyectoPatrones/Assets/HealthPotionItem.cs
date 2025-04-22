@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HealthPotionItem : MonoBehaviour
 {
+    public int healAmount = 25;
     private PlayerHealth playerHealth;
 
     void Start()
@@ -13,12 +14,11 @@ public class HealthPotionItem : MonoBehaviour
     {
         if (playerHealth != null)
         {
-            playerHealth.Heal(25);
-            Debug.Log("Used Health Potion! +25 HP");
-        }
-        else
-        {
-            Debug.LogWarning("PlayerHealth not found.");
+            playerHealth.Heal(25); // heal amount
+            Debug.Log("Used health potion!");
+
+           
+            Destroy(gameObject);
         }
     }
 }

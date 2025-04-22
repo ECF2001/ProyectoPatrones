@@ -20,6 +20,12 @@ TagManager:
   - 
   - 
   - 
+  - PlayerBullet
+  - EnemyBullet
+  - Player
+  - Enemy
+  - 
+  - 
   - 
   - 
   - 
