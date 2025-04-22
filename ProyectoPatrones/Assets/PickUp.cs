@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PickUp : MonoBehaviour
 {
@@ -22,17 +22,27 @@ public class PickUp : MonoBehaviour
             for (int i = 0; i < inventory.items.Length; i++)
             {
                 Transform slotTransform = inventory.items[i].transform;
+
                 if (slotTransform.childCount == 0)
                 {
-                    // Fix: instantiate and parent correctly
+                 
                     GameObject buttonInstance = Instantiate(itemButton);
-                    buttonInstance.transform.SetParent(slotTransform, false); // <--- THIS IS CRUCIAL
+                    buttonInstance.transform.SetParent(slotTransform, false); // keeps UI scaling/layout
 
+                    // 🔧 RESET scale and position so it aligns correctly in UI
+                    RectTransform rect = buttonInstance.GetComponent<RectTransform>();
+                    rect.anchoredPosition = Vector2.zero;
+                    rect.localScale = Vector3.one;
+
+                    // Mark slot as full
                     inventory.isFull[i] = true;
-                    Destroy(gameObject); // remove world pickup
+
+                    // Destroy world pickup item
+                    Destroy(gameObject);
                     break;
                 }
             }
         }
     }
-}
+    }
+
