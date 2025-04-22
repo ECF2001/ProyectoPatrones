@@ -19,13 +19,28 @@ public class Slot : MonoBehaviour
         }
        
     }
+    public void OnButtonClicked()
+    {
+        Debug.Log("Button was clicked!");
+        DropItem();
+    }
 
     public void DropItem()
     {
+        Debug.Log($"Intentando soltar {transform.childCount} objetos en el slot.");
         foreach (Transform child in transform)
         {
-            child.GetComponent<Spawn>().SpawnDroppedItem();
-            Destroy(child.gameObject);
+            Spawn spawnComponent = child.GetComponent<Spawn>();
+            if (spawnComponent != null)
+            {
+                Debug.Log($"Soltando el objeto: {child.name}");
+                spawnComponent.SpawnDroppedItem();
+                Destroy(child.gameObject);
+            }
+            else
+            {
+                Debug.LogWarning($"El objeto {child.name} no tiene el componente Spawn.");
+            }
         }
     }
 }

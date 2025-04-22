@@ -28,4 +28,5 @@ public class PlayerShoot : MonoBehaviour
         rb.MoveRotation(Quaternion.FromToRotation(Vector3.up, direction)); // Rotar la bala para que apunte en la dirección correcta
         Debug.Log("Bala disparada");
     }
+
 }

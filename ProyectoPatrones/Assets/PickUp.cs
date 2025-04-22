@@ -24,9 +24,12 @@ public class PickUp : MonoBehaviour
                 Transform slotTransform = inventory.items[i].transform;
                 if (slotTransform.childCount == 0)
                 {
-                    Instantiate(itemButton, slotTransform, false);
+                    // Fix: instantiate and parent correctly
+                    GameObject buttonInstance = Instantiate(itemButton);
+                    buttonInstance.transform.SetParent(slotTransform, false); // <--- THIS IS CRUCIAL
+
                     inventory.isFull[i] = true;
-                    Destroy(gameObject);
+                    Destroy(gameObject); // remove world pickup
                     break;
                 }
             }
