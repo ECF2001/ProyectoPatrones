@@ -143,6 +143,7 @@ public class LevelGenerator : MonoBehaviour
             if (!IsPassage(x + i - 1, y - 1))
             {
                 GameObject muroInst = Instantiate(muroPrefab, new Vector3(x + i - 1, y - 1, 0), Quaternion.identity);
+                muroInst.layer = LayerMask.NameToLayer("Muro");
                 muroInst.AddComponent<BoxCollider2D>(); // Añadir el collider al muro
                 muroInst.GetComponent<BoxCollider2D>().isTrigger = false; // Asegurarse de que no sea un trigger (físico)
                 muroInst.GetComponent<SpriteRenderer>().sortingOrder = -1; // Colocar el muro por debajo
@@ -151,6 +152,7 @@ public class LevelGenerator : MonoBehaviour
             if (!IsPassage(x + i - 1, y + roomHeight))
             {
                 GameObject muroInst = Instantiate(muroPrefab, new Vector3(x + i - 1, y + roomHeight, 0), Quaternion.identity);
+                muroInst.layer = LayerMask.NameToLayer("Muro");
                 muroInst.AddComponent<BoxCollider2D>(); // Añadir el collider al muro
                 muroInst.GetComponent<BoxCollider2D>().isTrigger = false; // Asegurarse de que no sea un trigger (físico)
                 muroInst.GetComponent<SpriteRenderer>().sortingOrder = -1; // Colocar el muro por debajo
@@ -162,6 +164,7 @@ public class LevelGenerator : MonoBehaviour
             if (!IsPassage(x - 1, y + j - 1))
             {
                 GameObject muroInst = Instantiate(muroPrefab, new Vector3(x - 1, y + j - 1, 0), Quaternion.identity);
+                muroInst.layer = LayerMask.NameToLayer("Muro");
                 muroInst.AddComponent<BoxCollider2D>(); // Añadir el collider al muro
                 muroInst.GetComponent<BoxCollider2D>().isTrigger = false; // Asegurarse de que no sea un trigger (físico)
                 muroInst.GetComponent<SpriteRenderer>().sortingOrder = -1; // Colocar el muro por debajo
@@ -170,6 +173,7 @@ public class LevelGenerator : MonoBehaviour
             if (!IsPassage(x + roomWidth, y + j - 1))
             {
                 GameObject muroInst = Instantiate(muroPrefab, new Vector3(x + roomWidth, y + j - 1, 0), Quaternion.identity);
+                muroInst.layer = LayerMask.NameToLayer("Muro");
                 muroInst.AddComponent<BoxCollider2D>(); // Añadir el collider al muro
                 muroInst.GetComponent<BoxCollider2D>().isTrigger = false; // Asegurarse de que no sea un trigger (físico)
                 muroInst.GetComponent<SpriteRenderer>().sortingOrder = -1; // Colocar el muro por debajo
