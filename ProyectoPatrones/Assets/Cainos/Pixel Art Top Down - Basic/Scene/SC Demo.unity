@@ -34418,13 +34418,9 @@ GameObject:
   - component: {fileID: 2052144994}
   - component: {fileID: 2052144995}
   - component: {fileID: 2052144996}
-<<<<<<< HEAD
-  m_Layer: 3
-=======
   - component: {fileID: 2052144999}
   - component: {fileID: 2052144997}
   m_Layer: 0
->>>>>>> d44cb226c21dd4d3c5c3c0008b378fcbcf132d35
   m_Name: 0x72_DungeonTilesetII_v1.7_113
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -34583,9 +34579,6 @@ MonoBehaviour:
     type: 3}
   shootPoint: {fileID: 1828327270}
   bulletSpeed: 10
-<<<<<<< HEAD
---- !u!61 &2052144995
-=======
 --- !u!114 &2052144995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34606,7 +34599,6 @@ MonoBehaviour:
   - {fileID: 54571650}
   isFull: 0000000000
 --- !u!61 &2052144996
->>>>>>> d44cb226c21dd4d3c5c3c0008b378fcbcf132d35
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -34652,11 +34644,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1.3125}
   m_EdgeRadius: 0
-<<<<<<< HEAD
---- !u!114 &2052144996
-=======
 --- !u!114 &2052144997
->>>>>>> d44cb226c21dd4d3c5c3c0008b378fcbcf132d35
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -34665,12 +34653,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2052144988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-<<<<<<< HEAD
-  m_Script: {fileID: 11500000, guid: 9b8409d25f85cb240b44cb6dc73d4612, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 10
-=======
   m_Script: {fileID: 11500000, guid: 503f645638e0e524aa195265fc68ccad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -34688,7 +34670,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
->>>>>>> d44cb226c21dd4d3c5c3c0008b378fcbcf132d35
 --- !u!1001 &2055511854
 PrefabInstance:
   m_ObjectHideFlags: 0
