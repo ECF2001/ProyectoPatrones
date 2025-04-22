@@ -863,7 +863,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 93688869}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4276,7 +4276,7 @@ GameObject:
   - component: {fileID: 171070745}
   - component: {fileID: 171070746}
   - component: {fileID: 171070747}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: WeaponAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5796,7 +5796,7 @@ PrefabInstance:
     - target: {fileID: 7549310202232457386, guid: 6d067e48774e8d84f9d489be4447ca61,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7549310202232457386, guid: 6d067e48774e8d84f9d489be4447ca61,
         type: 3}
@@ -11017,6 +11017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da9dc1e247f02744b8c85fbc6ad6a7aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healAmount: 25
 --- !u!114 &433350173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12265,7 +12266,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -32792,7 +32793,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1828327270}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33323,7 +33324,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1903770256}
   - component: {fileID: 1903770258}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: WeaponAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34420,7 +34421,7 @@ GameObject:
   - component: {fileID: 2052144996}
   - component: {fileID: 2052144999}
   - component: {fileID: 2052144997}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 0x72_DungeonTilesetII_v1.7_113
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -34668,8 +34669,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1a9feaacb0fd54db8c74d376f5d2f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 0
 --- !u!1001 &2055511854
 PrefabInstance:
   m_ObjectHideFlags: 0
