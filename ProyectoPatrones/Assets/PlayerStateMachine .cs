@@ -4,23 +4,27 @@ public class PlayerStateMachine : MonoBehaviour
 {
     public IPlayerState currentState;
     public Rigidbody2D rb;
-    public Animator animator; // Nuevo
-   // public Faction faction = Faction.Player;
+    public Animator animator;
+
+    public Vector2 movement; // Movimiento compartido
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>(); // Asegúrate de que el Animator esté en el mismo GameObject
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
-        currentState = new IdleState(this, rb);
+        currentState = new IdleState(this, animator, rb);
         currentState.Enter();
     }
 
     private void Update()
     {
+        // Capturamos el input cada frame y lo reseteamos correctamente
+        movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
         currentState.HandleInput(this);
         currentState.Update();
     }
