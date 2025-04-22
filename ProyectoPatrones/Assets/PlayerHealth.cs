@@ -1,4 +1,5 @@
 using UnityEngine;
+
 using System.Collections.Generic;
 
 public class PlayerHealth : MonoBehaviour, IHealthSubject
@@ -38,16 +39,23 @@ public class PlayerHealth : MonoBehaviour, IHealthSubject
         }
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(float damageAmount)
     {
-        currentHealth = Mathf.Max(0, currentHealth - damageAmount);
+        currentHealth = (int)Mathf.Max(0, currentHealth - damageAmount);
         Debug.Log($"Player took {damageAmount} damage. Current health: {currentHealth}/{maxHealth}");
         NotifyObservers();
+
 
         if (currentHealth <= 0)
         {
             Die();
         }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Player died!");
+        // Aquí puedes agregar animaciones, transiciones de estado, reinicio de escena, etc.
     }
 
     public void Heal(int healAmount)
@@ -57,14 +65,11 @@ public class PlayerHealth : MonoBehaviour, IHealthSubject
         NotifyObservers();
     }
 
+
     public float GetHealthPercentage()
     {
         return (float)currentHealth / maxHealth;
     }
-
-    private void Die()
-    {
-        Debug.Log("Player died!");
-        // Add your death logic here
-    }
 }
+
+

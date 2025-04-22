@@ -1,10 +1,12 @@
 using UnityEngine;
 
+
 public class PlayerShoot : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public Transform shootPoint;
     public float bulletSpeed = 5f;
+  
 
     void Update()
     {
@@ -16,6 +18,9 @@ public class PlayerShoot : MonoBehaviour
 
     void Shoot()
     {
+        GameObject bulletGO = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        bulletGO.GetComponent<Bullet>().isEnemyBullet = false;
+
         Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         target.z = 0;
 

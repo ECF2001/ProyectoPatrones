@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4950107937669747635}
   - component: {fileID: 466040769542295389}
   - component: {fileID: -7430228546398381191}
-  m_Layer: 22
+  m_Layer: 6
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,3 +168,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifetime: 30
   damage: 10
+  isEnemyBullet: 0

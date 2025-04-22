@@ -1,23 +1,37 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Bullet : MonoBehaviour
 {
-    public float lifetime = 30f; // Tiempo de vida de la bala    
-    public float damage = 10f; // Daño de la bala
+    public float lifetime = 30f;       // Tiempo de vida de la bala    
+    public float damage = 10f;         // Daño de la bala
+    public bool isEnemyBullet = false; // Marca si la bala fue disparada por un enemigo
+
+    private void Start()
+    {
+        Destroy(gameObject, lifetime); // Destruye la bala después de cierto tiempo
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Verifica si la colisión es con un enemigo
-        if (other.CompareTag("Enemy"))
+        if (!isEnemyBullet && other.CompareTag("Enemy"))
         {
-            // Obtiene el componente Enemy del objeto con el que colisionó
+            // Si es bala del jugador y golpea a un enemigo
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage); // Llama al método TakeDamage del enemigo
+                enemy.TakeDamage(damage);
             }
-            Destroy(gameObject); // Destruye la bala después de hacer daño
+           
         }
+        else if (isEnemyBullet && other.CompareTag("Player"))
+        {
+            PlayerHealth player = other.GetComponent<PlayerHealth>();
+            if (player != null)
+            {
+                player.TakeDamage(damage);
+            }
+            
+        }
+        Destroy(gameObject); // Destruye la bala al colisionar
     }
 }

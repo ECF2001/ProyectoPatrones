@@ -5,6 +5,7 @@ public class PlayerStateMachine : MonoBehaviour
     public IPlayerState currentState;
     public Rigidbody2D rb;
     public Animator animator; // Nuevo
+   // public Faction faction = Faction.Player;
 
     private void Awake()
     {
