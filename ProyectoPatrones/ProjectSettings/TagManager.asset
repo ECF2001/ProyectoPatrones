@@ -9,7 +9,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Suelo
@@ -22,7 +22,7 @@ TagManager:
   - 
   - PlayerBullet
   - EnemyBullet
-  - Player
+  - 
   - Enemy
   - 
   - 
@@ -35,12 +35,6 @@ TagManager:
   - Layer 1
   - Layer 2
   - Layer 3
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 
