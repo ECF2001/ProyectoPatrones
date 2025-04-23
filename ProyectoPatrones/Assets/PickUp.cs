@@ -25,14 +25,15 @@ public class PickUp : MonoBehaviour
 
                 if (slotTransform.childCount == 0)
                 {
-                 
-                    GameObject buttonInstance = Instantiate(itemButton);
-                    buttonInstance.transform.SetParent(slotTransform, false); // keeps UI scaling/layout
 
-                    // 🔧 RESET scale and position so it aligns correctly in UI
+                    GameObject buttonInstance = Instantiate(itemButton);
+                    buttonInstance.transform.SetParent(slotTransform, false);
+
                     RectTransform rect = buttonInstance.GetComponent<RectTransform>();
-                    rect.anchoredPosition = Vector2.zero;
+                    rect.anchoredPosition = Vector2.zero;  // Center in UI slot
+                    rect.localRotation = Quaternion.identity;
                     rect.localScale = Vector3.one;
+
 
                     // Mark slot as full
                     inventory.isFull[i] = true;
