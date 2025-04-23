@@ -147,7 +147,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 93688869}
-  m_Layer: 17
+  m_Layer: 11
   m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,6 @@ MonoBehaviour:
   gridWidth: 50
   gridHeight: 50
   numberOfRooms: 3
-  enemyPool: {fileID: 0}
 --- !u!156049354 &162317301
 Grid:
   m_ObjectHideFlags: 0
@@ -415,7 +414,7 @@ PrefabInstance:
     - target: {fileID: 7549310202232457386, guid: 6d067e48774e8d84f9d489be4447ca61,
         type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7549310202232457386, guid: 6d067e48774e8d84f9d489be4447ca61,
         type: 3}
@@ -877,7 +876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   factory: {fileID: 1372310541}
-  initialSize: 3
+  initialSize: 20
 --- !u!4 &758973705
 Transform:
   m_ObjectHideFlags: 0
@@ -1868,7 +1867,7 @@ PrefabInstance:
     - target: {fileID: 779333258265746687, guid: 6e9355670f06ef4459f968921704a795,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.76
+      value: 0.72022945
       objectReference: {fileID: 0}
     - target: {fileID: 779333258265746687, guid: 6e9355670f06ef4459f968921704a795,
         type: 3}
@@ -2122,8 +2121,8 @@ Transform:
   m_GameObject: {fileID: 1828327269}
   serializedVersion: 2
   m_LocalRotation: {x: -0.00034904052, y: -0, z: -0, w: 0.99999994}
-  m_LocalPosition: {x: 0.5, y: 0, z: -0.00031413636}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.9, z: 0}
+  m_LocalScale: {x: 11.4314, y: 12.259646, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 171070745}
@@ -2138,7 +2137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1903770256}
   - component: {fileID: 1903770258}
-  m_Layer: 17
+  m_Layer: 11
   m_Name: WeaponAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

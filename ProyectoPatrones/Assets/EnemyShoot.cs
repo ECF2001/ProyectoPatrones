@@ -28,12 +28,14 @@ public class EnemyShoot : MonoBehaviour
 
     void ShootAtPlayer()
     {
+        GameObject bulletGO = Instantiate(bulletPrefab,transform.position, transform.rotation);
+        bulletGO.GetComponent<Bullet>().isEnemyBullet = true;
+
         if (targetPlayer == null) return;
 
         Vector2 direction = (targetPlayer.position - shootPoint.position).normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
-        bullet.GetComponent<Bullet>().isEnemyBullet = true;
     }
 }

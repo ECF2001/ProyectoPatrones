@@ -1,11 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// Clase para representar una habitaciï¿½n
+// Clase para representar una habitación
 public class Room
 {
     public int x, y, width, height;
-
 
     public Room(int x, int y, int width, int height)
     {
@@ -21,14 +20,14 @@ public class RoomPrototype : Room
 {
     public RoomPrototype(int x, int y, int width, int height) : base(x, y, width, height) { }
 
-    // Clonar una habitaciï¿½n con la misma configuraciï¿½n
+    // Clonar una habitación con la misma configuración
     public RoomPrototype Clone()
     {
         return new RoomPrototype(this.x, this.y, this.width, this.height);
     }
 }
 
-// Builder para la creaciï¿½n del nivel
+// Builder para la creación del nivel
 public class LevelBuilder
 {
     private LevelGenerator _levelGenerator;
@@ -62,95 +61,80 @@ public class LevelBuilder
 
     private void CreateRoom()
     {
-        // Crear una habitaciï¿½n prototipo (habitaciones estï¿½ndar que se clonarï¿½n)
+        // Crear una habitación prototipo (habitaciones estándar que se clonarán)
         RoomPrototype roomPrototype = new RoomPrototype(0, 0, 12, 8);
 
-        // Si es la primera habitaciï¿½n, colocarla en el centro de la cï¿½mara
+        // Si es la primera habitación, colocarla en el centro de la cámara
         Room clonedRoom;
         if (_rooms.Count == 0)
         {
-            // Obtener la posiciï¿½n de la cï¿½mara principal
+            // Obtener la posición de la cámara principal
             Camera mainCamera = Camera.main;
             float cameraCenterX = mainCamera.transform.position.x;
             float cameraCenterY = mainCamera.transform.position.y;
 
-            // Clonar la habitaciï¿½n prototipo y colocarla centrada
+            // Clonar la habitación prototipo y colocarla centrada
             clonedRoom = roomPrototype.Clone();
             clonedRoom.x = Mathf.FloorToInt(cameraCenterX - clonedRoom.width / 2);  // Centrado en X
             clonedRoom.y = Mathf.FloorToInt(cameraCenterY - clonedRoom.height / 2); // Centrado en Y
         }
         else
         {
-            // Clonar la habitaciï¿½n de forma aleatoria para las siguientes habitaciones
+            // Clonar la habitación de forma aleatoria para las siguientes habitaciones
             clonedRoom = roomPrototype.Clone();
             clonedRoom.x = Random.Range(0, _gridWidth - clonedRoom.width);
             clonedRoom.y = Random.Range(0, _gridHeight - clonedRoom.height);
         }
 
         _rooms.Add(clonedRoom);
-        _levelGenerator.CreateRoom(clonedRoom);  // Aquï¿½ pasamos la habitaciï¿½n clonada
+        _levelGenerator.CreateRoom(clonedRoom);  // Aquí pasamos la habitación clonada
     }
 
 }
 
-
-// Generador del nivel (ajustado para evitar spawn fuera de habitaciones)
-public class LevelGenerator : MonoBehaviour
-{
-    public GameObject sueloPrefab;
-    public GameObject muroPrefab;
-    public int gridWidth = 50;
-    public int gridHeight = 50;
-    public int numberOfRooms = 3;
-    public ObjectPool enemyPool;
-
-    private List<Room> rooms = new List<Room>();
-    private List<Vector2> sueloPositions = new List<Vector2>(); // NUEVO: registrar suelo vï¿½lido
-
-    void Start()
+    // Generador del nivel
+    public class LevelGenerator : MonoBehaviour
     {
-        GenerateLevel();
-    }
+        public GameObject sueloPrefab;   // Prefab para el suelo
+        public GameObject muroPrefab;    // Prefab para los muros
+        public int gridWidth = 50;       // Ancho del mapa
+        public int gridHeight = 50;      // Alto del mapa
+        public int numberOfRooms = 3;    // Número de habitaciones a generar
+        private List<Room> rooms = new List<Room>();  // Lista para almacenar las habitaciones
 
-    void GenerateLevel()
-    {
-        rooms.Clear();
-        sueloPositions.Clear();
+        void Start()
+        {
+            GenerateLevel();  // Llamamos a la función para generar el nivel al iniciar
+        }
 
-        LevelBuilder builder = new LevelBuilder(this, gridWidth, gridHeight);
-        builder.BuildRooms(numberOfRooms);
-        builder.ConnectRooms();
+        void GenerateLevel()
+        {
+            rooms.Clear(); // Limpiar la lista de habitaciones
 
-        SpawnEnemiesInRooms();
-    }
+            // Crear las habitaciones con el patrón Builder
+            LevelBuilder builder = new LevelBuilder(this, gridWidth, gridHeight);
+            builder.BuildRooms(numberOfRooms);
 
+            // Conectar las habitaciones con pasillos
+            builder.ConnectRooms();
+        }
+    public GameObject healthPotionPrefab;
+
+    // Método para crear habitación con parámetros (debe ser llamado por el Builder)
     public void CreateRoom(Room room)
-    {
-        int x = room.x;
-        int y = room.y;
-        int roomWidth = room.width;
-        int roomHeight = room.height;
-
-
-
-        for (int i = 0; i < roomWidth; i++)
         {
             int x = room.x;
             int y = room.y;
             int roomWidth = room.width;
             int roomHeight = room.height;
 
-            // Instanciar el suelo para la habitaciï¿½n
+            // Instanciar el suelo para la habitación
             for (int i = 0; i < roomWidth; i++)
             {
-                Vector2 tilePos = new Vector2(x + i + 0.5f, y + j + 0.5f);
-                GameObject sueloInst = Instantiate(sueloPrefab, tilePos, Quaternion.identity);
-                sueloInst.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                sueloPositions.Add(tilePos); //  registrar suelo vï¿½lido
                 for (int j = 0; j < roomHeight; j++)
                 {
                     GameObject sueloInst = Instantiate(sueloPrefab, new Vector3(x + i, y + j, 0), Quaternion.identity); // Colocar el suelo
-                    sueloInst.GetComponent<SpriteRenderer>().sortingOrder = 1; // Asegurarnos de que el suelo estï¿½ por encima
+                    sueloInst.GetComponent<SpriteRenderer>().sortingOrder = 1; // Asegurarnos de que el suelo esté por encima
                 }
             }
             Vector2 centerPos = new Vector2(x + roomWidth / 2, y + roomHeight / 2);
@@ -160,184 +144,135 @@ public class LevelGenerator : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("No se asignï¿½ el prefab de Health Potion.");
+                Debug.LogWarning("No se asignó el prefab de Health Potion.");
             }
 
-
-
+        // Instanciar las paredes alrededor de la habitación
         for (int i = 0; i < roomWidth + 2; i++)
-        {
-            if (!IsPassage(x + i - 1, y - 1))
-                CreateWall(x + i - 1, y - 1);
-
-            if (!IsPassage(x + i - 1, y + roomHeight))
-                CreateWall(x + i - 1, y + roomHeight);
-        }
-
-        for (int j = 0; j < roomHeight + 2; j++)
-        {
-            if (!IsPassage(x - 1, y + j - 1))
-                CreateWall(x - 1, y + j - 1);
-
-            if (!IsPassage(x + roomWidth, y + j - 1))
-                CreateWall(x + roomWidth, y + j - 1);
-        }
-    }
-
-    void SpawnEnemiesInRooms()
-    {
-        int enemiesPerRoom = 3;
-        int margin = 1;
-
-        foreach (Room room in rooms)
-        {
-            List<Vector2> validPositions = new List<Vector2>();
-
-            for (int i = room.x + margin; i < room.x + room.width - margin; i++)
             {
-                for (int j = room.y + margin; j < room.y + room.height - margin; j++)
+                if (!IsPassage(x + i - 1, y - 1))
                 {
-                    Vector2 pos = new Vector2(i + 0.5f, j + 0.5f);
+                    GameObject muroInst = Instantiate(muroPrefab, new Vector3(x + i - 1, y - 1, 0), Quaternion.identity);
+                    muroInst.layer = LayerMask.NameToLayer("Muro");
+                    muroInst.AddComponent<BoxCollider2D>(); // Añadir el collider al muro
+                    muroInst.GetComponent<BoxCollider2D>().isTrigger = false; // Asegurarse de que no sea un trigger (físico)
+                    muroInst.GetComponent<SpriteRenderer>().sortingOrder = -1; // Colocar el muro por debajo
+                }
 
-                    // 1. Verificar que la posiciï¿½n estï¿½ en sueloPositions (garantiza tile pintado)
-                    if (!sueloPositions.Contains(pos))
-                        continue;
+                if (!IsPassage(x + i - 1, y + roomHeight))
+                {
+                    GameObject muroInst = Instantiate(muroPrefab, new Vector3(x + i - 1, y + roomHeight, 0), Quaternion.identity);
+                    muroInst.layer = LayerMask.NameToLayer("Muro");
+                    muroInst.AddComponent<BoxCollider2D>(); // Añadir el collider al muro
+                    muroInst.GetComponent<BoxCollider2D>().isTrigger = false; // Asegurarse de que no sea un trigger (físico)
+                    muroInst.GetComponent<SpriteRenderer>().sortingOrder = -1; // Colocar el muro por debajo
+                }
+            }
 
-                    // 2. Verificar colisiones
-                    Collider2D hit = Physics2D.OverlapCircle(pos, 0.4f, LayerMask.GetMask("Muro", "Enemy"));
-                    if (hit == null)
+            for (int j = 0; j < roomHeight + 2; j++)
+            {
+                if (!IsPassage(x - 1, y + j - 1))
+                {
+                    GameObject muroInst = Instantiate(muroPrefab, new Vector3(x - 1, y + j - 1, 0), Quaternion.identity);
+                    muroInst.layer = LayerMask.NameToLayer("Muro");
+                    muroInst.AddComponent<BoxCollider2D>(); // Añadir el collider al muro
+                    muroInst.GetComponent<BoxCollider2D>().isTrigger = false; // Asegurarse de que no sea un trigger (físico)
+                    muroInst.GetComponent<SpriteRenderer>().sortingOrder = -1; // Colocar el muro por debajo
+                }
+
+                if (!IsPassage(x + roomWidth, y + j - 1))
+                {
+                    GameObject muroInst = Instantiate(muroPrefab, new Vector3(x + roomWidth, y + j - 1, 0), Quaternion.identity);
+                    muroInst.layer = LayerMask.NameToLayer("Muro");
+                    muroInst.AddComponent<BoxCollider2D>(); // Añadir el collider al muro
+                    muroInst.GetComponent<BoxCollider2D>().isTrigger = false; // Asegurarse de que no sea un trigger (físico)
+                    muroInst.GetComponent<SpriteRenderer>().sortingOrder = -1; // Colocar el muro por debajo
+                }
+            }
+        }
+
+        // Verificar si una habitación es válida (no se solapa)
+        public bool IsRoomValid(int x, int y, int width, int height)
+        {
+            foreach (Room room in rooms)
+            {
+                if (x < room.x + room.width && x + width > room.x && y < room.y + room.height && y + height > room.y)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Verificar si una posición es un pasillo
+        public bool IsPassage(int x, int y)
+        {
+            foreach (Room room in rooms)
+            {
+                if (x >= room.x && x < room.x + room.width && y >= room.y && y < room.y + room.height)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Crear pasillos entre habitaciones
+        public void CreatePassage(Room roomA, Room roomB)
+        {
+            int x1 = roomA.x + roomA.width / 2;
+            int y1 = roomA.y + roomA.height / 2;
+            int x2 = roomB.x + roomB.width / 2;
+            int y2 = roomB.y + roomB.height / 2;
+
+            while (y1 != y2)
+            {
+                Instantiate(sueloPrefab, new Vector3(x1, y1, 0), Quaternion.identity);
+                Instantiate(sueloPrefab, new Vector3(x1 + 1, y1, 0), Quaternion.identity);
+                Instantiate(sueloPrefab, new Vector3(x1 + 2, y1, 0), Quaternion.identity);
+
+                CreateWall(x1 - 1, y1);
+                CreateWall(x1 + 3, y1);
+
+                if (y1 < y2) y1++;
+                else if (y1 > y2) y1--;
+            }
+
+            while (x1 != x2)
+            {
+                Instantiate(sueloPrefab, new Vector3(x1, y1, 0), Quaternion.identity);
+                Instantiate(sueloPrefab, new Vector3(x1, y1 + 1, 0), Quaternion.identity);
+                Instantiate(sueloPrefab, new Vector3(x1, y1 + 2, 0), Quaternion.identity);
+
+                CreateWall(x1, y1 - 1);
+                CreateWall(x1, y1 + 3);
+
+                if (x1 < x2) x1++;
+                else if (x1 > x2) x1--;
+            }
+        }
+
+        // Método para crear muros en las posiciones correctas
+        void CreateWall(int x, int y)
+        {
+            if (!IsPassage(x, y))  // Verificar si no es un pasillo
+            {
+                // Ampliar el rango de creación de muros
+                // Crear muros en un área más grande alrededor del pasillo
+                for (int i = -2; i <= 2; i++)  // Aumentando el rango de -1 a 2 para mayor cobertura
+                {
+                    for (int j = -2; j <= 2; j++)  // Aumentando el rango de -1 a 2 para mayor cobertura
                     {
-                        validPositions.Add(pos);
+                        // Verificar si la posición es fuera del área del pasillo
+                        if (!IsPassage(x + i, y + j))
+                        {
+                            GameObject muroInst = Instantiate(muroPrefab, new Vector3(x + i, y + j, 0), Quaternion.identity);
+                            muroInst.AddComponent<BoxCollider2D>();  // Añadir el collider al muro
+                            muroInst.GetComponent<BoxCollider2D>().isTrigger = false;  // Asegurarse de que no sea un trigger (físico)
+                            muroInst.GetComponent<SpriteRenderer>().sortingOrder = -1;  // Colocar el muro por debajo del suelo
+                        }
                     }
                 }
             }
-
-            // Mezclar para aleatoriedad
-            for (int i = 0; i < validPositions.Count; i++)
-            {
-                Vector2 temp = validPositions[i];
-                int randIndex = Random.Range(i, validPositions.Count);
-                validPositions[i] = validPositions[randIndex];
-                validPositions[randIndex] = temp;
-            }
-
-            // Spawnear
-            int spawned = 0;
-            foreach (Vector2 pos in validPositions)
-            {
-                if (spawned >= enemiesPerRoom) break;
-
-                GameObject enemy = enemyPool.GetEnemy();
-                if (enemy != null)
-                {
-                    enemy.SetActive(false); // Asegura que OnEnable se reinicie limpio
-                    enemy.transform.position = pos;
-                    enemy.SetActive(true);
-                    spawned++;
-                }
-            }
-
-            if (spawned < enemiesPerRoom)
-            {
-                Debug.LogWarning($"No se pudieron generar los {enemiesPerRoom} enemigos en la habitaciï¿½n ({room.x}, {room.y})");
-            }
         }
     }
-
-
-    public bool IsRoomValid(int x, int y, int width, int height)
-    {
-        foreach (Room room in rooms)
-        {
-            if (x < room.x + room.width && x + width > room.x && y < room.y + room.height && y + height > room.y)
-                return false;
-        }
-        return true;
-    }
-
-    public bool IsPassage(int x, int y)
-    {
-        foreach (Room room in rooms)
-        {
-            if (x >= room.x && x < room.x + room.width && y >= room.y && y < room.y + room.height)
-                return true;
-        }
-        return false;
-    }
-
-   public void CreatePassage(Room roomA, Room roomB)
-{
-    int x1 = roomA.x + roomA.width / 2;
-    int y1 = roomA.y + roomA.height / 2;
-    int x2 = roomB.x + roomB.width / 2;
-    int y2 = roomB.y + roomB.height / 2;
-
-    while (y1 != y2)
-    {
-        Vector2 pos1 = new Vector2(x1 + 0.5f, y1 + 0.5f);
-        sueloPositions.Add(pos1);
-        Instantiate(sueloPrefab, pos1, Quaternion.identity);
-
-        Vector2 pos2 = new Vector2(x1 + 1 + 0.5f, y1 + 0.5f);
-        sueloPositions.Add(pos2);
-        Instantiate(sueloPrefab, pos2, Quaternion.identity);
-
-        Vector2 pos3 = new Vector2(x1 + 2 + 0.5f, y1 + 0.5f);
-        sueloPositions.Add(pos3);
-        Instantiate(sueloPrefab, pos3, Quaternion.identity);
-
-        CreateWall(x1 - 1, y1);
-        CreateWall(x1 + 3, y1);
-
-        y1 += (y2 > y1) ? 1 : -1;
-    }
-
-    while (x1 != x2)
-    {
-        Vector2 pos1 = new Vector2(x1 + 0.5f, y1 + 0.5f);
-        sueloPositions.Add(pos1);
-        Instantiate(sueloPrefab, pos1, Quaternion.identity);
-
-        Vector2 pos2 = new Vector2(x1 + 0.5f, y1 + 1 + 0.5f);
-        sueloPositions.Add(pos2);
-        Instantiate(sueloPrefab, pos2, Quaternion.identity);
-
-        Vector2 pos3 = new Vector2(x1 + 0.5f, y1 + 2 + 0.5f);
-        sueloPositions.Add(pos3);
-        Instantiate(sueloPrefab, pos3, Quaternion.identity);
-
-        CreateWall(x1, y1 - 1);
-        CreateWall(x1, y1 + 3);
-
-        x1 += (x2 > x1) ? 1 : -1;
-    }
-}
-
-
-    void CreateWall(int x, int y)
-    {
-        for (int i = -2; i <= 2; i++)
-        {
-            for (int j = -2; j <= 2; j++)
-            {
-                int wx = x + i;
-                int wy = y + j;
-
-                if (!IsPassage(wx, wy))
-                {
-                    Vector2 wallPos = new Vector2(wx + 0.5f, wy + 0.5f);
-
-                    //  Elimina la posiciï¿½n de suelo si estï¿½ ocupada por un muro
-                    if (sueloPositions.Contains(wallPos))
-                        sueloPositions.Remove(wallPos);
-
-                    GameObject muroInst = Instantiate(muroPrefab, new Vector3(wx, wy, 0), Quaternion.identity);
-                    muroInst.layer = LayerMask.NameToLayer("Muro");
-                    muroInst.AddComponent<BoxCollider2D>().isTrigger = false;
-                    muroInst.GetComponent<SpriteRenderer>().sortingOrder = -1;
-                }
-            }
-        }
-    }
-}
-
