@@ -61,9 +61,12 @@ public class LevelBuilder
 
         if (_rooms.Count == 0)
         {
+            // Obtener la posici�n de la c�mara principal
             Camera mainCamera = Camera.main;
             float cameraCenterX = mainCamera.transform.position.x;
             float cameraCenterY = mainCamera.transform.position.y;
+
+            // Clonar la habitaci�n prototipo y colocarla centrada
             clonedRoom = roomPrototype.Clone();
             clonedRoom.x = Mathf.FloorToInt(cameraCenterX - clonedRoom.width / 2);
             clonedRoom.y = Mathf.FloorToInt(cameraCenterY - clonedRoom.height / 2);
@@ -100,18 +103,25 @@ public class LevelGenerator : MonoBehaviour
 
     void Start() => GenerateLevel();
 
-    void GenerateLevel()
-    {
-        rooms.Clear();
-        sueloPositions.Clear();
+        void Start()
+        {
+            GenerateLevel();  // Llamamos a la funci�n para generar el nivel al iniciar
+        }
 
-        LevelBuilder builder = new LevelBuilder(this, gridWidth, gridHeight);
-        builder.BuildRooms(numberOfRooms);
-        builder.ConnectRooms();
+        void GenerateLevel()
+        {
+            rooms.Clear(); // Limpiar la lista de habitaciones
 
-        SpawnEnemiesInRooms();
-    }
+            // Crear las habitaciones con el patr�n Builder
+            LevelBuilder builder = new LevelBuilder(this, gridWidth, gridHeight);
+            builder.BuildRooms(numberOfRooms);
 
+            // Conectar las habitaciones con pasillos
+            builder.ConnectRooms();
+        }
+    public GameObject healthPotionPrefab;
+
+    // M�todo para crear habitaci�n con par�metros (debe ser llamado por el Builder)
     public void CreateRoom(Room room)
     {
         int x = room.x;
@@ -127,6 +137,29 @@ public class LevelGenerator : MonoBehaviour
                 GameObject sueloInst = Instantiate(sueloPrefab, tilePos, Quaternion.identity);
                 sueloInst.GetComponent<SpriteRenderer>().sortingOrder = 1;
                 sueloPositions.Add(tilePos);
+        {
+            int x = room.x;
+            int y = room.y;
+            int roomWidth = room.width;
+            int roomHeight = room.height;
+
+            // Instanciar el suelo para la habitaci�n
+            for (int i = 0; i < roomWidth; i++)
+            {
+                for (int j = 0; j < roomHeight; j++)
+                {
+                    GameObject sueloInst = Instantiate(sueloPrefab, new Vector3(x + i, y + j, 0), Quaternion.identity); // Colocar el suelo
+                    sueloInst.GetComponent<SpriteRenderer>().sortingOrder = 1; // Asegurarnos de que el suelo est� por encima
+                }
+            }
+            Vector2 centerPos = new Vector2(x + roomWidth / 2, y + roomHeight / 2);
+            if (healthPotionPrefab != null)
+            {
+                Instantiate(healthPotionPrefab, centerPos, Quaternion.identity);
+            }
+            else
+            {
+                Debug.LogWarning("No se asign� el prefab de Health Potion.");
             }
         }
 
@@ -164,7 +197,7 @@ public class LevelGenerator : MonoBehaviour
 
             for (int i = room.x + margin; i < room.x + room.width - margin; i++)
             {
-                for (int j = room.y + margin; j < room.y + room.height - margin; j++)
+                if (!IsPassage(x + i - 1, y - 1))
                 {
                     Vector2 pos = new Vector2(i + 0.5f, j + 0.5f);
                     if (!sueloPositions.Contains(pos)) continue;
