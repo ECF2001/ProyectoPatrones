@@ -3,9 +3,14 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float health = 50f; // Vida del enemigo
-    public float damagePerHit = 10f; // Daño recibido por cada impacto
+    public float damagePerHit = 10f; // Daï¿½o recibido por cada impacto
     //public Faction faction = Faction.Enemy; 
+    private EnemyShoot shooter;
 
+    private void Awake()
+    {
+        shooter = GetComponent<EnemyShoot>();
+    }
     public void TakeDamage(float damage)
     {
         health -= damage; // Reduce la vida
@@ -17,7 +22,25 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Enemy died!"); // Puedes agregar una animación aquí
-        gameObject.SetActive(false); // Desactiva el enemigo
+        Debug.Log("Enemy died!");
+
+        if (shooter != null)
+            shooter.enabled = false; // Detiene el disparo
+
+        gameObject.SetActive(false); // Para usar con pooling
+    }
+
+    private void OnEnable()
+    {
+        health = 50f;
+
+        if (shooter != null)
+        {
+            shooter.enabled = true;
+        }
+
+        // MUY IMPORTANTE si el enemigo tiene fï¿½sica:
+        transform.rotation = Quaternion.identity;
+        GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
     }
 }

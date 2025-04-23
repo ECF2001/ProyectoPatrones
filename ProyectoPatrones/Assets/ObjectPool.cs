@@ -4,7 +4,7 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     public EnemyFactory factory;  // Referencia a EnemyFactory
-    public int initialSize = 20;  // Número de enemigos iniciales en la pool
+    public int initialSize = 5;  // Número de enemigos iniciales en la pool
 
     private Queue<GameObject> pool = new Queue<GameObject>();
 
@@ -23,12 +23,12 @@ public class ObjectPool : MonoBehaviour
     {
         if (pool.Count == 0)
         {
-            return factory.CreateEnemy();  // Si no hay enemigos en la pool, crea uno nuevo
+            Debug.LogWarning("Pool vacía. No se generará más enemigos.");
+            return null;
         }
 
-        return pool.Dequeue();  // Toma el siguiente enemigo de la pool
+        return pool.Dequeue();
     }
-
     // Método para devolver un enemigo al pool
     public void ReturnEnemy(GameObject enemy)
     {
