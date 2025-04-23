@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b35091453db3b45ac9fd1f153be7a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemButton: {fileID: 2820076124158153550, guid: 5b1ae6e9fa16123499dbb0f78615bbc3,
+  itemButton: {fileID: 1502751054957893020, guid: f6feb31f4ab5f114094edca028c9c050,
     type: 3}
 --- !u!58 &6862915312066023738
 CircleCollider2D:
@@ -153,7 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da9dc1e247f02744b8c85fbc6ad6a7aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healAmount: 25
 --- !u!114 &1625534691736562395
 MonoBehaviour:
   m_ObjectHideFlags: 0
