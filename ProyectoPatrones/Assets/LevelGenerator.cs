@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// Clase para representar una habitación
+// Clase para representar una habitaciï¿½n
 public class Room
 {
     public int x, y, width, height;
@@ -21,14 +21,14 @@ public class RoomPrototype : Room
 {
     public RoomPrototype(int x, int y, int width, int height) : base(x, y, width, height) { }
 
-    // Clonar una habitación con la misma configuración
+    // Clonar una habitaciï¿½n con la misma configuraciï¿½n
     public RoomPrototype Clone()
     {
         return new RoomPrototype(this.x, this.y, this.width, this.height);
     }
 }
 
-// Builder para la creación del nivel
+// Builder para la creaciï¿½n del nivel
 public class LevelBuilder
 {
     private LevelGenerator _levelGenerator;
@@ -62,33 +62,33 @@ public class LevelBuilder
 
     private void CreateRoom()
     {
-        // Crear una habitación prototipo (habitaciones estándar que se clonarán)
+        // Crear una habitaciï¿½n prototipo (habitaciones estï¿½ndar que se clonarï¿½n)
         RoomPrototype roomPrototype = new RoomPrototype(0, 0, 12, 8);
 
-        // Si es la primera habitación, colocarla en el centro de la cámara
+        // Si es la primera habitaciï¿½n, colocarla en el centro de la cï¿½mara
         Room clonedRoom;
         if (_rooms.Count == 0)
         {
-            // Obtener la posición de la cámara principal
+            // Obtener la posiciï¿½n de la cï¿½mara principal
             Camera mainCamera = Camera.main;
             float cameraCenterX = mainCamera.transform.position.x;
             float cameraCenterY = mainCamera.transform.position.y;
 
-            // Clonar la habitación prototipo y colocarla centrada
+            // Clonar la habitaciï¿½n prototipo y colocarla centrada
             clonedRoom = roomPrototype.Clone();
             clonedRoom.x = Mathf.FloorToInt(cameraCenterX - clonedRoom.width / 2);  // Centrado en X
             clonedRoom.y = Mathf.FloorToInt(cameraCenterY - clonedRoom.height / 2); // Centrado en Y
         }
         else
         {
-            // Clonar la habitación de forma aleatoria para las siguientes habitaciones
+            // Clonar la habitaciï¿½n de forma aleatoria para las siguientes habitaciones
             clonedRoom = roomPrototype.Clone();
             clonedRoom.x = Random.Range(0, _gridWidth - clonedRoom.width);
             clonedRoom.y = Random.Range(0, _gridHeight - clonedRoom.height);
         }
 
         _rooms.Add(clonedRoom);
-        _levelGenerator.CreateRoom(clonedRoom);  // Aquí pasamos la habitación clonada
+        _levelGenerator.CreateRoom(clonedRoom);  // Aquï¿½ pasamos la habitaciï¿½n clonada
     }
 
 }
@@ -105,7 +105,7 @@ public class LevelGenerator : MonoBehaviour
     public ObjectPool enemyPool;
 
     private List<Room> rooms = new List<Room>();
-    private List<Vector2> sueloPositions = new List<Vector2>(); // NUEVO: registrar suelo válido
+    private List<Vector2> sueloPositions = new List<Vector2>(); // NUEVO: registrar suelo vï¿½lido
 
     void Start()
     {
@@ -135,14 +135,33 @@ public class LevelGenerator : MonoBehaviour
 
         for (int i = 0; i < roomWidth; i++)
         {
-            for (int j = 0; j < roomHeight; j++)
+            int x = room.x;
+            int y = room.y;
+            int roomWidth = room.width;
+            int roomHeight = room.height;
+
+            // Instanciar el suelo para la habitaciï¿½n
+            for (int i = 0; i < roomWidth; i++)
             {
                 Vector2 tilePos = new Vector2(x + i + 0.5f, y + j + 0.5f);
                 GameObject sueloInst = Instantiate(sueloPrefab, tilePos, Quaternion.identity);
                 sueloInst.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                sueloPositions.Add(tilePos); //  registrar suelo válido
+                sueloPositions.Add(tilePos); //  registrar suelo vï¿½lido
+                for (int j = 0; j < roomHeight; j++)
+                {
+                    GameObject sueloInst = Instantiate(sueloPrefab, new Vector3(x + i, y + j, 0), Quaternion.identity); // Colocar el suelo
+                    sueloInst.GetComponent<SpriteRenderer>().sortingOrder = 1; // Asegurarnos de que el suelo estï¿½ por encima
+                }
             }
-        }
+            Vector2 centerPos = new Vector2(x + roomWidth / 2, y + roomHeight / 2);
+            if (healthPotionPrefab != null)
+            {
+                Instantiate(healthPotionPrefab, centerPos, Quaternion.identity);
+            }
+            else
+            {
+                Debug.LogWarning("No se asignï¿½ el prefab de Health Potion.");
+            }
 
 
 
@@ -180,7 +199,7 @@ public class LevelGenerator : MonoBehaviour
                 {
                     Vector2 pos = new Vector2(i + 0.5f, j + 0.5f);
 
-                    // 1. Verificar que la posición esté en sueloPositions (garantiza tile pintado)
+                    // 1. Verificar que la posiciï¿½n estï¿½ en sueloPositions (garantiza tile pintado)
                     if (!sueloPositions.Contains(pos))
                         continue;
 
@@ -220,7 +239,7 @@ public class LevelGenerator : MonoBehaviour
 
             if (spawned < enemiesPerRoom)
             {
-                Debug.LogWarning($"No se pudieron generar los {enemiesPerRoom} enemigos en la habitación ({room.x}, {room.y})");
+                Debug.LogWarning($"No se pudieron generar los {enemiesPerRoom} enemigos en la habitaciï¿½n ({room.x}, {room.y})");
             }
         }
     }
@@ -308,7 +327,7 @@ public class LevelGenerator : MonoBehaviour
                 {
                     Vector2 wallPos = new Vector2(wx + 0.5f, wy + 0.5f);
 
-                    //  Elimina la posición de suelo si está ocupada por un muro
+                    //  Elimina la posiciï¿½n de suelo si estï¿½ ocupada por un muro
                     if (sueloPositions.Contains(wallPos))
                         sueloPositions.Remove(wallPos);
 
